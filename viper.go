@@ -620,8 +620,12 @@ func (v *Viper) Get(key string) interface{} {
 		return cast.ToTime(val)
 	case time.Duration:
 		return cast.ToDuration(val)
+	case []bool:
+		return cast.ToBoolSlice(val)
 	case []string:
 		return cast.ToStringSlice(val)
+	case []time.Duration:
+		return cast.ToDurationSlice(val)
 	}
 	return val
 }
@@ -893,7 +897,7 @@ func (v *Viper) find(lcaseKey string) interface{} {
 			return cast.ToInt(flag.ValueString())
 		case "bool":
 			return cast.ToBool(flag.ValueString())
-		case "stringSlice":
+		case "stringSlice", "boolSlice", "durationSlice":
 			s := strings.TrimPrefix(flag.ValueString(), "[")
 			s = strings.TrimSuffix(s, "]")
 			res, _ := readAsCSV(s)
@@ -962,7 +966,7 @@ func (v *Viper) find(lcaseKey string) interface{} {
 			return cast.ToInt(flag.ValueString())
 		case "bool":
 			return cast.ToBool(flag.ValueString())
-		case "stringSlice":
+		case "stringSlice", "boolSlice", "durationSlice":
 			s := strings.TrimPrefix(flag.ValueString(), "[")
 			s = strings.TrimSuffix(s, "]")
 			res, _ := readAsCSV(s)
